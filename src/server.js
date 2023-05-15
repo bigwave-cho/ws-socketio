@@ -27,6 +27,13 @@ const wss = new WebSocketServer({
   // ws://naver~~:3000  http://naver~~:3000
 });
 
+function handleConnection(socket) {
+  console.log(socket);
+}
+//this: WebSocket.Server<WebSocket.WebSocket>, socket: WebSocket.WebSocket, request: http.IncomingMessage
+// socket을 이용해 메시지를 주고 받기 가능. socket을 저장해두고 써야 함.
+wss.on('connection', handleConnection);
+
 server.listen(3000, handleListen);
 
 // express는 http이므로 ws를 지원하지 않는다. 따라서 function을 추가해야 함.
