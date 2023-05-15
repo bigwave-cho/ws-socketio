@@ -35,15 +35,27 @@ const sockets = [];
 wss.on('connection', (socket) => {
   //연결될 때마다 소켓추가
   sockets.push(socket);
-
+  // 닉 안정한 사람 기본 anon
+  socket['nickname'] = 'Anon';
   console.log('Connected to Browser!');
 
   socket.on('close', () => {
     console.log('discnnected from the Browswer!');
   });
 
-  socket.on('message', (message) => {
-    sockets.forEach((aSocket) => aSocket.send(message.toString('utf8')));
+  socket.on('message', (msg) => {
+    const message = JSON.parse(msg);
+    switch (message.type) {
+      case 'new_message':
+        sockets.forEach((aSocket) =>
+          aSocket.send(`${socket.nickname}:${message.payload}`)
+        );
+        break;
+      case 'nickname':
+        socket['nickname'] = message.payload;
+        //socket은 객체라 위처럼 프로퍼티 추가 가능
+        break;
+    }
   });
 });
 
