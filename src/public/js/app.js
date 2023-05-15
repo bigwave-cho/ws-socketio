@@ -1,3 +1,6 @@
+const messageList = document.querySelector('ul');
+const messageForm = document.querySelector('form');
+
 //https://developer.mozilla.org/ko/docs/Web/API/WebSocket
 
 // app의 socket은 서버로의 연결을, server의 socket은 어떤 브라우저가 연결되었나(클라)
@@ -8,7 +11,7 @@ socket.addEventListener('open', () => {
 });
 
 socket.addEventListener('message', (message) => {
-  console.log('Just got this: ', message.data, 'from server');
+  console.log('Just got this: ', message.data.toString(), 'from server');
 });
 
 socket.addEventListener('close', () => {
@@ -16,6 +19,12 @@ socket.addEventListener('close', () => {
   console.log('disconnected from the server');
 });
 
-setTimeout(() => {
-  socket.send('hello from the browswer!');
-}, 10000);
+function handleSubmit(event) {
+  event.preventDefault();
+
+  const input = messageForm.querySelector('input');
+  socket.send(input.value);
+  input.value = '';
+}
+
+messageForm.addEventListener('submit', handleSubmit);

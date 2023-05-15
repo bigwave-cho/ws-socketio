@@ -29,7 +29,13 @@ const wss = new WebSocketServer({
 
 //this: WebSocket.Server<WebSocket.WebSocket>, socket: WebSocket.WebSocket, request: http.IncomingMessage
 // socket을 이용해 메시지를 주고 받기 가능. socket을 저장해두고 써야 함.
+// 연결된 소켓들 배열
+const sockets = [];
+
 wss.on('connection', (socket) => {
+  //연결될 때마다 소켓추가
+  sockets.push(socket);
+
   console.log('Connected to Browser!');
 
   socket.on('close', () => {
@@ -37,7 +43,7 @@ wss.on('connection', (socket) => {
   });
 
   socket.on('message', (message) => {
-    console.log(message.toString('utf-8'));
+    sockets.forEach((aSocket) => aSocket.send(message.toString('utf8')));
   });
 
   socket.send('hello!!!');
