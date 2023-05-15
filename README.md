@@ -40,3 +40,9 @@ npm run dev -> nodemon 실행 -> src/public경로의 모든 파일변경은 무�
 - ex: ws://naver.com
   브라우저와 서버가 양방향 연결( connected)됨.
   서버가 브라우저의 req없이 res가 가능
+
+- WS 라이브러리
+  https://www.npmjs.com/package/ws
+  JS를 위한 WS 라이브러리로 WS 프로토콜의 설명에 있는 기본적 기능만 가지고 있음.
+
+  추후 채팅방 기능 등을 구현해놓은 라이브러리도 사용해볼 것.
