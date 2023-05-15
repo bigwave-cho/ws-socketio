@@ -29,3 +29,14 @@ npm run dev -> nodemon 실행 -> src/public경로의 모든 파일변경은 무�
 -> babel.confing에 따라 프리셋 적용
 -> 최종적으로 변환된 'src/server.js' 파일이 노드js환경에서 실행되어 앱이 작동.
 -> 이 파일은 Express.js를 사용하여 웹서버를 가동하고 클라이언트의 요청에 응답하게 됨.
+
+## HTTP / WebSocket
+
+- ex: https://www.naver.com
+  HTTP는 statless한 상태(1회성 user-backend간 지속 연결 X)
+  로그인의 경우 서버는 유저를 기억하지 않기 때문에 cookie등에 신원확인을 담아 서버에 알려줘야함.
+  브라우저의 req가 있어야 서버의 res가 가능
+
+- ex: ws://naver.com
+  브라우저와 서버가 양방향 연결( connected)됨.
+  서버가 브라우저의 req없이 res가 가능
