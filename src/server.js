@@ -43,6 +43,13 @@ wss.on('connection', (socket) => {
     console.log('discnnected from the Browswer!');
   });
 
+  // WebScoket의 문제
+  //현 상태 나를 포함한 모든 socket에 메시지 전송중
+
+  // 단지 프로토콜일 뿐이라 개발자가 모든 기능을
+  // 직접 구현하고 message의 타입을 구분해줘야하는 등..
+  // socket.io 프레임워크 쓰면 간단히 해결됨.
+
   socket.on('message', (msg) => {
     const message = JSON.parse(msg);
     switch (message.type) {
