@@ -1,7 +1,7 @@
 import express, { application } from 'express';
 import path from 'path';
 import http from 'http';
-import WebSocket, { WebSocketServer } from 'ws';
+import { WebSocketServer } from 'ws';
 const __dirname = path.resolve();
 
 // express 인스턴스 생성
@@ -27,13 +27,20 @@ const wss = new WebSocketServer({
   // ws://naver~~:3000  http://naver~~:3000
 });
 
-function handleConnection(socket) {
-  console.log(socket);
-}
 //this: WebSocket.Server<WebSocket.WebSocket>, socket: WebSocket.WebSocket, request: http.IncomingMessage
 // socket을 이용해 메시지를 주고 받기 가능. socket을 저장해두고 써야 함.
-wss.on('connection', handleConnection);
+wss.on('connection', (socket) => {
+  console.log('Connected to Browser!');
+
+  socket.on('close', () => {
+    console.log('discnnected from the Browswer!');
+  });
+
+  socket.on('message', (message) => {
+    console.log(message.toString('utf-8'));
+  });
+
+  socket.send('hello!!!');
+});
 
 server.listen(3000, handleListen);
-
-// express는 http이므로 ws를 지원하지 않는다. 따라서 function을 추가해야 함.
