@@ -27,21 +27,14 @@ wsServer.on('connection', (socket) => {
   });
 
   //함수는 마지막 인자로
-  socket.on('enter_room', (roomname, done) => {
-    console.log(socket.id);
-
-    console.log(socket.rooms); //room 확인
-    console.log(roomname);
-    //socket.io에서 기본 제공하는 room 기능
-    socket.join(roomname);
-
-    console.log(socket.rooms); // room join 확인
-
-    socket.leave(roomname);
-
-    console.log(socket.rooms); // room leave 확인
+  socket.on('enter_room', (roomName, done) => {
+    socket.join(roomName);
 
     done();
+
+    //socket.io/docs/v4/server-api/#sockettoroom
+    // 방 접속 -> 해당 방 모두에게 Welcome 이벤트 emit
+    socket.to(roomName).emit('welcome');
   });
 
   // console.log(socket);

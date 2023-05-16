@@ -8,6 +8,13 @@ room.hidden = true;
 
 let roomName;
 
+function addMessage(message) {
+  const ul = room.querySelector('ul');
+  const li = document.createElement('li');
+  li.innerText = message;
+  ul.appendChild(li);
+}
+
 function showRoom() {
   welcome.hidden = true;
   room.hidden = false;
@@ -21,12 +28,16 @@ function hadleRoomSubmit(event) {
   // emit('이벤트명', {}, 서버에서 호출할 function)
   // 원래는 json으로 stringify해서 보냈다면
   // socket.io는 오브젝트도 보낼 수 있음.
-  socket.emit('enter_room', { payload: input.value }, showRoom);
+  socket.emit('enter_room', input.value, showRoom);
   roomName = input.value;
   input.value = '';
 }
 
 form.addEventListener('submit', hadleRoomSubmit);
+
+socket.on('welcome', () => {
+  addMessage('Someone joined!');
+});
 
 /*
 const messageList = document.querySelector('ul');
