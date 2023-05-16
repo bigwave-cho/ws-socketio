@@ -3,6 +3,7 @@ import path from 'path';
 import http from 'http';
 import { WebSocketServer } from 'ws';
 import { Server } from 'socket.io';
+import { instrument } from '@socket.io/admin-ui';
 
 const __dirname = path.resolve();
 
@@ -19,7 +20,17 @@ app.get('/*', (req, res) => res.redirect('/')); // 어떤 경로든 '/'으로 �
 const handleListen = () => console.log('Listening on http://localhost:3000');
 
 const httpServer = http.createServer(app); //http server
-const wsServer = new Server(httpServer);
+const wsServer = new Server(httpServer, {
+  cors: {
+    origin: ['https://admin.socket.io'],
+    credentials: true,
+  },
+});
+//https://admin.socket.io/ 여기 접속해보면 socket 어드민
+
+instrument(wsServer, {
+  auth: false,
+});
 
 // public room만 골라내기
 function publicRooms() {

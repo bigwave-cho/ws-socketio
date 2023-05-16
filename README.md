@@ -97,3 +97,7 @@ sid는 private room, rooms는 sid(private) + public(이름 설정해서 만든 �
   return key
   }
   })
+
+### socket.io admin ui
+
+https://socket.io/docs/v4/admin-ui/
