@@ -22,12 +22,26 @@ const httpServer = http.createServer(app); //http server
 const wsServer = new Server(httpServer);
 
 wsServer.on('connection', (socket) => {
+  socket.onAny((event) => {
+    console.log(`Socket Event :${event}`); //"enter_room"
+  });
+
   //함수는 마지막 인자로
   socket.on('enter_room', (roomname, done) => {
+    console.log(socket.id);
+
+    console.log(socket.rooms); //room 확인
     console.log(roomname);
-    setTimeout(() => {
-      done('hello from BE');
-    });
+    //socket.io에서 기본 제공하는 room 기능
+    socket.join(roomname);
+
+    console.log(socket.rooms); // room join 확인
+
+    socket.leave(roomname);
+
+    console.log(socket.rooms); // room leave 확인
+
+    done();
   });
 
   // console.log(socket);

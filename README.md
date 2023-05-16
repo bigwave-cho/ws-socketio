@@ -71,3 +71,6 @@ socketio는 웹소켓의 부가기능이 아니기 때문에 클라이언트에�
 socket.io는 전달 채널명?을 정해서 통신할 수 있기 때문에
 좋다.
 'emit("채널명", 오브젝트, 스트링, 불린, 함수)' 다 전달 가능
+
+- server api
+  https://socket.io/docs/v4/server-api/#serversocketsjoinrooms
