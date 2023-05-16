@@ -46,3 +46,19 @@ npm run dev -> nodemon 실행 -> src/public경로의 모든 파일변경은 무�
   JS를 위한 WS 라이브러리로 WS 프로토콜의 설명에 있는 기본적 기능만 가지고 있음.
 
   추후 채팅방 기능 등을 구현해놓은 라이브러리도 사용해볼 것.
+
+## Socket.io
+
+https://socket.io/docs/v3/
+
+서버를 가동하고 아래 url확인해보면
+-http://localhost:3000/socket.io/socket.io.js
+
+socketIo가 websocket을 이용한 많은 기능들 확인 가능
+또한 웹소켓을 이용할 수 없을 때 대체하는 것들도.
+
+socketio는 웹소켓의 부가기능이 아니기 때문에 클라이언트에도 설치해야함
+
+: script(src="/socket.io/socket.io.js")
+
+- socketio가 제공하는 기능을 사용할 수 있게 클라이언트에 추가
