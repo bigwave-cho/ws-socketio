@@ -1,5 +1,23 @@
 const socket = io();
 
+const welcome = document.getElementById('welcome');
+const form = welcome.querySelector('form');
+
+function hadleRoomSubmit(event) {
+  event.preventDefault();
+  const input = form.querySelector('input');
+  // emit('이벤트명', {}, 서버에서 호출할 function)
+  // 원래는 json으로 stringify해서 보냈다면
+  // socket.io는 오브젝트도 보낼 수 있음.
+  socket.emit('enter_room', { payload: input.value }, () => {
+    console.log('server is done!');
+  });
+
+  input.value = '';
+}
+
+form.addEventListener('submit', hadleRoomSubmit);
+
 /*
 const messageList = document.querySelector('ul');
 const nickForm = document.querySelector('#nick');

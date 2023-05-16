@@ -22,7 +22,15 @@ const httpServer = http.createServer(app); //http server
 const wsServer = new Server(httpServer);
 
 wsServer.on('connection', (socket) => {
-  console.log(socket);
+  socket.on('enter_room', (msg, done) => {
+    console.log(msg);
+    setTimeout(() => {
+      done(); // FE에서 전달한 함수
+      //서버에서 trigger
+    }, 5000);
+  });
+
+  // console.log(socket);
   /*
   ws는 소켓을 배열에 push해서 관리해야 했다면
   socket.io는 아래처럼 알아서 관리함.
