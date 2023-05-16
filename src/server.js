@@ -38,6 +38,10 @@ function publicRooms() {
   return publicRooms;
 }
 
+function countRoom(roomName) {
+  return wsServer.sockets.adapter.rooms.get(roomName)?.size;
+}
+
 wsServer.on('connection', (socket) => {
   // wsServer.socketsJoin('announcements')
   socket['nickname'] = 'Anon';
@@ -58,7 +62,7 @@ wsServer.on('connection', (socket) => {
     //socket.io/docs/v4/server-api/#sockettoroom
     //하나의 소켓(roomName)
     // 방 접속 -> 해당 방 모두에게 Welcome 이벤트 emit
-    socket.to(roomName).emit('welcome', socket.nickname);
+    socket.to(roomName).emit('welcome', socket.nickname, countRoom(roomName));
 
     // 모든 소켓에 이벤트
     wsServer.sockets.emit('room_change', publicRooms());
@@ -67,7 +71,7 @@ wsServer.on('connection', (socket) => {
   //disconnecting: 방을 떠나기 직전에 실행
   socket.on('disconnecting', () => {
     socket.rooms.forEach((room) =>
-      socket.to(room).emit('bye', socket.nickname)
+      socket.to(room).emit('bye', socket.nickname, countRoom(room) - 1)
     );
     wsServer.sockets.emit('room_change', publicRooms());
   });
