@@ -44,6 +44,7 @@ wsServer.on('connection', (socket) => {
 
   socket.onAny((event) => {
     //지금 확인되는 어댑터는 메모리(서버 꺼지면 휘발)
+    //in memory adapter는 서버간 커넥션 불가
     console.log(wsServer.sockets.adapter);
     console.log(`Socket Event :${event}`); //"enter_room"
   });
@@ -52,18 +53,27 @@ wsServer.on('connection', (socket) => {
   socket.on('enter_room', (roomName, nickname, done) => {
     socket.join(roomName);
     socket['nickname'] = nickname;
-    console.log(socket.rooms);
     done();
 
     //socket.io/docs/v4/server-api/#sockettoroom
+    //하나의 소켓(roomName)
     // 방 접속 -> 해당 방 모두에게 Welcome 이벤트 emit
     socket.to(roomName).emit('welcome', socket.nickname);
+
+    // 모든 소켓에 이벤트
+    wsServer.sockets.emit('room_change', publicRooms());
   });
 
+  //disconnecting: 방을 떠나기 직전에 실행
   socket.on('disconnecting', () => {
     socket.rooms.forEach((room) =>
       socket.to(room).emit('bye', socket.nickname)
     );
+    wsServer.sockets.emit('room_change', publicRooms());
+  });
+
+  socket.on('disconnect', () => {
+    wsServer.sockets.emit('room_change', publicRooms());
   });
 
   socket.on('new_message', (msg, roomName, done) => {
