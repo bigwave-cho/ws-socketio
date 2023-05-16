@@ -3,8 +3,8 @@ const socket = io();
 const welcome = document.getElementById('welcome');
 const form = welcome.querySelector('form');
 
-function backendDone() {
-  console.log('backend done!');
+function backendDone(msg) {
+  console.log(`BE says: ${msg}`);
 }
 
 function hadleRoomSubmit(event) {
@@ -13,7 +13,7 @@ function hadleRoomSubmit(event) {
   // emit('이벤트명', {}, 서버에서 호출할 function)
   // 원래는 json으로 stringify해서 보냈다면
   // socket.io는 오브젝트도 보낼 수 있음.
-  socket.emit('enter_room', { payload: input.value }, 'ㄷㄷㄷ', backendDone);
+  socket.emit('enter_room', { payload: input.value }, backendDone);
 
   input.value = '';
 }

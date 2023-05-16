@@ -23,14 +23,11 @@ const wsServer = new Server(httpServer);
 
 wsServer.on('connection', (socket) => {
   //함수는 마지막 인자로
-  socket.on('enter_room', (msg, c, done) => {
-    console.log(msg);
-    console.log(c);
+  socket.on('enter_room', (roomname, done) => {
+    console.log(roomname);
     setTimeout(() => {
-      //예: 처리의 완료를 클라이언트에 알려주는 용도
-      done(); // FE에서 전달한 함수
-      //서버에서 trigger
-    }, 5000);
+      done('hello from BE');
+    });
   });
 
   // console.log(socket);
