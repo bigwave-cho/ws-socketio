@@ -6,7 +6,7 @@ const room = document.getElementById('room');
 
 room.hidden = true;
 
-let roomName;
+let roomName, nickName;
 
 function addMessage(message) {
   const ul = room.querySelector('ul');
@@ -30,33 +30,30 @@ function handleMessageSubmit(event) {
   input.value = '';
 }
 
-function handleNicknameSubmit(event) {
-  event.preventDefault();
-  const input = room.querySelector('#name input');
-  socket.emit('nickname', input.value);
-}
-
 function showRoom() {
   welcome.hidden = true;
   room.hidden = false;
   const h3 = room.querySelector('h3');
   h3.innerText = `Room ${roomName}`;
+  span = room.querySelector('span');
+  span.innerText = `My nickname is ${nickName}`;
 
   const msgForm = room.querySelector('#msg');
-  const nameForm = room.querySelector('#name');
+
   msgForm.addEventListener('submit', handleMessageSubmit);
-  nameForm.addEventListener('submit', handleNicknameSubmit);
 }
 
 function hadleRoomSubmit(event) {
   event.preventDefault();
-  const input = form.querySelector('input');
-  // emit('이벤트명', {}, 서버에서 호출할 function)
-  // 원래는 json으로 stringify해서 보냈다면
-  // socket.io는 오브젝트도 보낼 수 있음.
-  socket.emit('enter_room', input.value, showRoom);
-  roomName = input.value;
-  input.value = '';
+  console.log(form);
+  console.log(form.querySelector('#roomName'));
+  const roomInput = form.querySelector('#roomName');
+
+  const nickInput = form.querySelector('#nickName');
+  roomName = roomInput.value;
+  nickName = nickInput.value;
+
+  socket.emit('enter_room', roomName, nickName, showRoom);
 }
 
 form.addEventListener('submit', hadleRoomSubmit);

@@ -30,8 +30,9 @@ wsServer.on('connection', (socket) => {
   });
 
   //함수는 마지막 인자로
-  socket.on('enter_room', (roomName, done) => {
+  socket.on('enter_room', (roomName, nickname, done) => {
     socket.join(roomName);
+    socket['nickname'] = nickname;
 
     done();
 
@@ -51,9 +52,9 @@ wsServer.on('connection', (socket) => {
     done();
   });
 
-  socket.on('nickname', (nickname) => {
-    socket['nickname'] = nickname;
-  });
+  // socket.on('nickname', (nickname) => {
+  //   socket['nickname'] = nickname;
+  // });
 
   // console.log(socket);
   /*
