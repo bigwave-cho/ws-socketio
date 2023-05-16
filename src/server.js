@@ -37,6 +37,15 @@ wsServer.on('connection', (socket) => {
     socket.to(roomName).emit('welcome');
   });
 
+  socket.on('disconnecting', () => {
+    socket.rooms.forEach((room) => socket.to(room).emit('bye'));
+  });
+
+  socket.on('new_message', (msg, roomName, done) => {
+    socket.to(roomName).emit('new_message', msg);
+    done();
+  });
+
   // console.log(socket);
   /*
   ws는 소켓을 배열에 push해서 관리해야 했다면

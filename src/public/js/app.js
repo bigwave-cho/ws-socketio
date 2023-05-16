@@ -15,11 +15,29 @@ function addMessage(message) {
   ul.appendChild(li);
 }
 
+function handleMessageSubmit(event) {
+  event.preventDefault();
+  const input = room.querySelector('input');
+  const value = input.value;
+  // socket이 비동기적으로 작동하기 떄문에
+  // input.value를 그대로 써버리면
+  // server로 전송 값은 가지만
+  // 콜백함수는 빈값을 받게 됨.
+
+  socket.emit('new_message', input.value, roomName, () => {
+    addMessage(`You: ${value}`);
+  });
+  input.value = '';
+}
+
 function showRoom() {
   welcome.hidden = true;
   room.hidden = false;
   const h3 = room.querySelector('h3');
   h3.innerText = `Room ${roomName}`;
+
+  const form = room.querySelector('form');
+  form.addEventListener('submit', handleMessageSubmit);
 }
 
 function hadleRoomSubmit(event) {
@@ -37,6 +55,14 @@ form.addEventListener('submit', hadleRoomSubmit);
 
 socket.on('welcome', () => {
   addMessage('Someone joined!');
+});
+
+socket.on('bye', () => {
+  addMessage('someone left');
+});
+
+socket.on('new_message', (msg) => {
+  addMessage(msg);
 });
 
 /*
