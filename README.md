@@ -74,3 +74,26 @@ socket.io는 전달 채널명?을 정해서 통신할 수 있기 때문에
 
 - server api
   https://socket.io/docs/v4/server-api/#serversocketsjoinrooms
+
+### Adaptor
+
+A와 B란 서버가 있고 두 서버를 이용하는 클라이언트는
+하나의 프론트엔드를 공유하고 있다.
+
+하지만 서버가 다르기 때문에 각 서버의 유저는 서로 커넥션 불가
+
+그래서 몽고DB의 어댑터를 이용해 두 서버를 연결해야 함.
+
+### private, public room
+
+adaptor 까보면 sid(socketids)와 rooms를 볼수 있는데
+sid는 private room, rooms는 sid(private) + public(이름 설정해서 만든 룸)이라고 보면 됨.
+
+- rooms = sids + public
+
+- public room만 솎아내기.
+  rooms.forEach((\_,key)=>{
+  if(sids.get(key) === undefined){
+  return key
+  }
+  })

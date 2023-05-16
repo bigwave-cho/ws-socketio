@@ -21,11 +21,30 @@ const handleListen = () => console.log('Listening on http://localhost:3000');
 const httpServer = http.createServer(app); //http server
 const wsServer = new Server(httpServer);
 
+// public room만 골라내기
+function publicRooms() {
+  const {
+    sockets: {
+      adapter: { sids, rooms },
+    },
+  } = wsServer;
+  const publicRooms = [];
+
+  rooms.forEach((_, key) => {
+    if (sids.get(key) === undefined) {
+      publicRooms.push(key);
+    }
+  });
+  return publicRooms;
+}
+
 wsServer.on('connection', (socket) => {
   // wsServer.socketsJoin('announcements')
   socket['nickname'] = 'Anon';
 
   socket.onAny((event) => {
+    //지금 확인되는 어댑터는 메모리(서버 꺼지면 휘발)
+    console.log(wsServer.sockets.adapter);
     console.log(`Socket Event :${event}`); //"enter_room"
   });
 
@@ -33,7 +52,7 @@ wsServer.on('connection', (socket) => {
   socket.on('enter_room', (roomName, nickname, done) => {
     socket.join(roomName);
     socket['nickname'] = nickname;
-
+    console.log(socket.rooms);
     done();
 
     //socket.io/docs/v4/server-api/#sockettoroom
