@@ -22,9 +22,12 @@ const httpServer = http.createServer(app); //http server
 const wsServer = new Server(httpServer);
 
 wsServer.on('connection', (socket) => {
-  socket.on('enter_room', (msg, done) => {
+  //함수는 마지막 인자로
+  socket.on('enter_room', (msg, c, done) => {
     console.log(msg);
+    console.log(c);
     setTimeout(() => {
+      //예: 처리의 완료를 클라이언트에 알려주는 용도
       done(); // FE에서 전달한 함수
       //서버에서 trigger
     }, 5000);
